@@ -49,6 +49,7 @@ def merge_bit_sequences(*bit_sequences):
 def build_candidates(pmir):
     green_soft = 0x3F
     green_full = 0xFF
+    green_mid = 0x80
 
     same_cfg_960 = pmir.CommandSetConfig(
         on_start=True,
@@ -136,6 +137,93 @@ def build_candidates(pmir):
                     attack=pmir.Time.TIME_0_MS,
                     sustain=pmir.Time.TIME_96_MS,
                     release=pmir.Time.TIME_32_MS,
+                ),
+            ],
+        ),
+        (
+            "X2_BACKGROUND_GREEN_TRIGGER_480",
+            "Set green background silently, then trigger a longer green effect with visible release back to background.",
+            [
+                pmir.CommandSetColor(
+                    red=0x00,
+                    green=green_full,
+                    blue=0x00,
+                    is_background=True,
+                    skip_display=True,
+                ),
+                pmir.CommandSingleColorExt(
+                    red=0x00,
+                    green=green_mid,
+                    blue=0x00,
+                    attack=pmir.Time.TIME_32_MS,
+                    sustain=pmir.Time.TIME_480_MS,
+                    release=pmir.Time.TIME_480_MS,
+                ),
+            ],
+        ),
+        (
+            "X2_BACKGROUND_GREEN_TRIGGER_960",
+            "Set green background silently, then trigger a longer green effect with 960 ms sustain.",
+            [
+                pmir.CommandSetColor(
+                    red=0x00,
+                    green=green_full,
+                    blue=0x00,
+                    is_background=True,
+                    skip_display=True,
+                ),
+                pmir.CommandSingleColorExt(
+                    red=0x00,
+                    green=green_mid,
+                    blue=0x00,
+                    attack=pmir.Time.TIME_32_MS,
+                    sustain=pmir.Time.TIME_960_MS,
+                    release=pmir.Time.TIME_480_MS,
+                ),
+            ],
+        ),
+        (
+            "X2_BACKGROUND_GREEN_RELEASE0",
+            "Set green background silently, then trigger a green effect with release=0 to try to latch current color.",
+            [
+                pmir.CommandSetColor(
+                    red=0x00,
+                    green=green_full,
+                    blue=0x00,
+                    is_background=True,
+                    skip_display=True,
+                ),
+                pmir.CommandSingleColorExt(
+                    red=0x00,
+                    green=green_full,
+                    blue=0x00,
+                    attack=pmir.Time.TIME_32_MS,
+                    sustain=pmir.Time.TIME_480_MS,
+                    release=pmir.Time.TIME_0_MS,
+                ),
+            ],
+        ),
+        (
+            "X2_BACKGROUND_GREEN_REPEAT5",
+            "Set green background silently, then repeat a green effect several times before returning to background.",
+            [
+                pmir.CommandSetColor(
+                    red=0x00,
+                    green=green_full,
+                    blue=0x00,
+                    is_background=True,
+                    skip_display=True,
+                ),
+                pmir.CommandSetRepeatDelayTime(repeat_delay=pmir.Time.TIME_480_MS),
+                pmir.CommandSetRepeatCount(repeat_count=5),
+                pmir.CommandSingleColorExt(
+                    red=0x00,
+                    green=green_mid,
+                    blue=0x00,
+                    attack=pmir.Time.TIME_32_MS,
+                    sustain=pmir.Time.TIME_480_MS,
+                    release=pmir.Time.TIME_480_MS,
+                    enable_repeat=True,
                 ),
             ],
         ),
